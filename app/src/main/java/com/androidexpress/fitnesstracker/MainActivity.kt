@@ -2,41 +2,25 @@ package com.androidexpress.fitnesstracker
 
 import android.content.Intent
 import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-// Define the OnItemClickListener interface
-interface OnItemClickListener {
-    fun onClick(id: Int)
-}
-
-data class MainItem(
-    val id: Int,
-    @drawableRes val drawableId: Int,
-    @stringRes val textStringId: Int,
-    val color: Int,
-)
-
-annotation class drawableRes
-
-annotation class stringRes
-
-class MainActivity : AppCompatActivity(), OnItemClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var rvMain: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
         val mainItems = mutableListOf<MainItem>()
@@ -44,78 +28,101 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             MainItem(
                 id = 1,
                 drawableId = R.drawable.baseline_wb_sunny_24,
-                textStringId = R.string.imc,
+                textStringId = R.string.label_imc,
                 color = Color.GREEN
             )
         )
         mainItems.add(
             MainItem(
                 id = 2,
-                drawableId = R.drawable.baseline_accessibility_24,
-                textStringId = R.string.tmb,
+                drawableId = R.drawable.baseline_wb_sunny_24,
+                textStringId = R.string.label_tmb,
                 color = Color.YELLOW
             )
         )
-        mainItems.add(
-            MainItem(
-                id = 3,
-                drawableId = R.drawable.baseline_wb_sunny_24,
-                textStringId = R.string.imc,
-                color = Color.GREEN
-            )
-        )
-        mainItems.add(
-            MainItem(
-                id = 4,
-                drawableId = R.drawable.baseline_wb_sunny_24,
-                textStringId = R.string.imc,
-                color = Color.GREEN
-            )
-        )
 
-        val adapter = MainAdapter(mainItems, this)
+        // 1) o layout XML
+        // 2) a onde a recyclerview vai aparecer (tela principal, tela cheia)
+        // 3) logica - conectar o xml da celula DENTRO do recyclerView + a sua quantidade de elementos dinamicos
+
+//        val adapter = MainAdapter(mainItems, object : OnItemClickListener {
+//            // METODO 2: IMPL VIA OBJETO ANONIMO
+//            override fun onClick(id: Int) {
+//                when(id) {
+//                    1 -> {
+//                        val intent = Intent(this@MainActivity, ImcActivity::class.java)
+//                        startActivity(intent)
+//                    }
+//                    2 -> {
+//                        // abrir uma outra activity
+//                    }
+//                }
+//                Log.i("Teste", "clicou $id!!")
+//            }
+//        })
+
+        val adapter = MainAdapter(mainItems) { id ->
+            // METODO 3: IMPL VIA FUNCTIONS
+            when (id) {
+                1 -> {
+                    val intent = Intent(this@MainActivity, ImcActivity::class.java)
+                    startActivity(intent)
+                }
+                2 -> {
+                    val intent = Intent(this@MainActivity, TmbActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            Log.i("Teste", "clicou $id!!")
+        }
+
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = GridLayoutManager(this, 2)
+
+        // classe para administar a recyclerview e suas celulas (os seus layouts de itens)
+        // Adapter ->
     }
 
-    override fun onClick(id: Int) {
-        when (id) {
-            1 -> {
-                val intent = Intent(this, imcActivity::class.java)
-                startActivity(intent)
-            }
-            2 -> {
-                // Add logic to open another activity or handle the click
-                Log.i("MainActivity", "Clicked item with id: $id")
-            }
-            else -> {
-                Log.i("MainActivity", "Unhandled item click with id: $id")
-            }
-        }
-        Log.i("MainActivity", "Item clicked with id: $id")
-    }
+    // METODO 1 : USANDO IMPL INTERFACE VIA ACTIVITY
+//    override fun onClick(id: Int) {
+//        when(id) {
+//            1 -> {
+//                val intent = Intent(this, ImcActivity::class.java)
+//                startActivity(intent)
+//            }
+//            2 -> {
+//                // abrir uma outra activity
+//            }
+//        }
+//        Log.i("Teste", "clicou $id!!")
+//    }
 
     private inner class MainAdapter(
         private val mainItems: List<MainItem>,
-        private val onItemClickListener: OnItemClickListener
+//        private val onItemClickListener: OnItemClickListener
+        private val onItemClickListener: (Int) -> Unit,
     ) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
+        // 1 - Qual é o layout XML da celula especifica (item)
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-            // Inflate the layout for each item
             val view = layoutInflater.inflate(R.layout.main_item, parent, false)
             return MainViewHolder(view)
         }
 
+        // 2 - disparado toda vez houver uma rolagem na tela e for necessario trocar o conteudo
+        // da celula
         override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
             val itemCurrent = mainItems[position]
             holder.bind(itemCurrent)
         }
 
+        // 3 - informar quantas celulas essa listagem terá
         override fun getItemCount(): Int {
             return mainItems.size
         }
 
+        // é a classe da celula em si!!!
         private inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(item: MainItem) {
                 val img: ImageView = itemView.findViewById(R.id.item_img_icon)
@@ -126,11 +133,21 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 name.setText(item.textStringId)
                 container.setBackgroundColor(item.color)
 
-                // Set click listener for the container
                 container.setOnClickListener {
-                    onItemClickListener.onClick(item.id)
+                    // aqui ele é uma ref. function
+                    onItemClickListener.invoke(item.id)
+
+                    // aqui ele é uma ref. interface
+                    // onItemClickListener.onClick(item.id)
                 }
             }
         }
+
     }
+
+    // 3 maneiras de escutar eventos de click usando celular (viewholder) activities
+    // !             1. [X] impl interface (nesse video)
+    // !!            2. objetos anonimos (prox.)
+    // !!! -> kotlin 3. funcional (prox.)
+
 }
