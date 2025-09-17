@@ -3,55 +3,166 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center"
-        tools:context=".ImcActivity">
+        android:padding="24dp"
+        tools:context=".TmbActivity">
 
-        <TextView
-            style="@style/TextViewForm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tmb_desc" />
-
-        <EditText
-            style="@style/EditTextForm"
-            android:id="@+id/edit_tmb_weight"
-            android:hint="@string/weight" />
-
-        <EditText
-            style="@style/EditTextForm"
-            android:id="@+id/edit_tmb_height"
-            android:hint="@string/height" />
-
-        <EditText
-            style="@style/EditTextForm"
-            android:id="@+id/edit_tmb_age"
-            android:hint="@string/age" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/AutoTextViewForm"
+        <!-- Header Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/colorSecondary">
 
-            <AutoCompleteTextView
-                android:id="@+id/auto_lifestyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
-                />
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_energy_24"
+                    android:tint="@color/colorOnSecondary"
+                    android:layout_marginBottom="16dp" />
 
-        <Button
-            style="@style/ButtonForm"
-            android:id="@+id/btn_tmb_send"
-            android:text="@string/calc" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calculadora de TMB"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorOnSecondary"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tmb_desc"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorOnSecondary"
+                    android:alpha="0.87"
+                    android:gravity="center"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Form Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/colorCardBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.FitnessTracker.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/weight"
+                    app:startIconDrawable="@drawable/ic_weight_24"
+                    app:startIconTint="@color/colorPrimary"
+                    app:suffixText="kg">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tmb_weight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.FitnessTracker.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/height"
+                    app:startIconDrawable="@drawable/ic_height_24"
+                    app:startIconTint="@color/colorPrimary"
+                    app:suffixText="cm">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tmb_height"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.FitnessTracker.TextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/age"
+                    app:startIconDrawable="@drawable/ic_age_24"
+                    app:startIconTint="@color/colorPrimary"
+                    app:suffixText="anos">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_tmb_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="3" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/AutoTextViewForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:hint="Estilo de vida"
+                    app:startIconDrawable="@drawable/ic_activity_24"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/auto_lifestyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_tmb_send"
+                    style="@style/ButtonForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="@string/calc"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_baseline_visibility_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconTint="@color/colorOnPrimary" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
