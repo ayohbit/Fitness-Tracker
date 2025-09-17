@@ -5,15 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
+    <!-- Header with app title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fitness Tracker"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorOnPrimary"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calcule seu IMC e TMB"
+            android:textSize="16sp"
+            android:textColor="@color/colorOnPrimary"
+            android:alpha="0.87"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- RecyclerView with padding -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_main"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
         tools:listitem="@layout/main_item"
-        tools:itemCount="5"
-        android:layout_height="match_parent" />
-
+        tools:itemCount="2" />
 
 </LinearLayout>

@@ -27,17 +27,17 @@ class MainActivity : AppCompatActivity() {
         mainItems.add(
             MainItem(
                 id = 1,
-                drawableId = R.drawable.baseline_wb_sunny_24,
+                drawableId = R.drawable.ic_scale_24,
                 textStringId = R.string.label_imc,
-                color = Color.GREEN
+                color = R.color.purple_200
             )
         )
         mainItems.add(
             MainItem(
                 id = 2,
-                drawableId = R.drawable.baseline_wb_sunny_24,
+                drawableId = R.drawable.ic_energy_24,
                 textStringId = R.string.label_tmb,
-                color = Color.YELLOW
+                color = R.color.purple_200
             )
         )
 
